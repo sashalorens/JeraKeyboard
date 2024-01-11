@@ -64,7 +64,7 @@ namespace JeraKeyboard
         private IntPtr HookID = IntPtr.Zero;
         private KeyHandler keyHandler = new KeyHandler();
         private Sequence sequence = new Sequence();
-        CallbackDelegate TheHookCB;
+        private static CallbackDelegate TheHookCB;
         //Start hook
         public KeyboardHook(bool Global)
         {

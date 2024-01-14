@@ -20,7 +20,8 @@ namespace JeraKeyboard
         public KeyHandler()
         {
             Console.WriteLine("KeyHandler initialized!");
-            jsonFile = LoadJson();
+            // jsonFile = LoadJson();
+            jsonFile = ConfigLoader.LoadConfig();
             sequence = new Sequence();
             inputConstructor = new InputConstructor();
         }

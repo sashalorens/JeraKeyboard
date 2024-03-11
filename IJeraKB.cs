@@ -8,8 +8,12 @@ namespace JeraKeyboard
 {
     public interface IJeraKB
     {
-        void Init();
+        void Init(string? path);
+        void Toggle(bool value);
+        bool IsActive();
 
         bool IsConfigExists();
+
+        void OverridePath(string path);
     }
 }

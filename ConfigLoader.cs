@@ -1,19 +1,22 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace JeraKeyboard
 {
     public static class ConfigLoader
     {
         private static bool isConfigExists = false;
+        private static string configPath = String.Empty;
 
-        public static JObject? LoadConfig()
+        public static JObject? LoadDefaultConfig()
         {
             try
             {
@@ -41,6 +44,32 @@ namespace JeraKeyboard
             }
         }
 
+        public static JObject? LoadConfig()
+        {
+            if (configPath == String.Empty)
+            {
+                return LoadDefaultConfig();
+            }
+
+            try
+            {
+                String jsonString = File.ReadAllText(configPath, Encoding.UTF8);
+                var jsonFile = JSONConverter.FromJson(jsonString);
+                isConfigExists = true;
+                return jsonFile;
+            }
+            catch (Exception)
+            {
+                isConfigExists = false;
+                return null;
+            }
+        }
+
         public static bool IsConfigExists() => isConfigExists;
+
+        public static void OverrideConfigPath(string path)
+        {
+            configPath = path;
+        }
     }
 }

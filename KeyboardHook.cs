@@ -1,6 +1,7 @@
 ﻿using JeraKeyboard.helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,6 +12,7 @@ namespace JeraKeyboard
     public class KeyboardHook : IDisposable
     {
         bool Global = false;
+        bool isActive = false;
         public delegate void ErrorEventHandler(Exception e);
         public delegate void LocalKeyEventHandler(Keys key, bool Shift, bool Ctrl, bool Alt);
         public event LocalKeyEventHandler? KeyDown;
@@ -105,12 +107,20 @@ namespace JeraKeyboard
                 IsFinalized = true;
             }
         }
+        public void Toggle(bool value)
+        {
+            isActive = value;
+        }
+
+        public void ReloadKH () => keyHandler.ReloadKeyHandler();
+        public bool GetState() => isActive;
+
         [STAThread]
         //The listener that will trigger events
         private int KeybHookProc(int Code, IntPtr W, IntPtr L)
         {
 
-            if (Code < 0)
+            if (Code < 0 || !isActive)
             {
                 return CallNextHookEx(HookID, Code, W, L);
             }

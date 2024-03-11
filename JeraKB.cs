@@ -5,21 +5,47 @@ namespace JeraKeyboard
 {
     public class JeraKB: IJeraKB
     {
-        public void Init()
+        private static KeyboardHook kh;
+        public void Init(string? path)
         {
-            var kh = new KeyboardHook(true);
+            kh = new KeyboardHook(true);
+            OverridePath(path);
             kh.KeyDown += Kh_KeyDown;
 
-            string userPath = ConfigurationManager.AppSettings["configPath"] ?? String.Empty;
-
             // Application.Run();
+        }
+
+        public bool IsActive()
+        {
+            if (kh != null)
+            {
+                return kh.GetState();
+            }
+            return false;
         }
 
         public bool IsConfigExists()
         {
             bool isExists = ConfigLoader.IsConfigExists();
-            Debug.WriteLine($"config!, {isExists}");
             return isExists;
+        }
+
+        public void Toggle(bool value)
+        {
+            if (kh  != null)
+            {
+                kh.Toggle(value);
+            }
+        }
+
+        public void OverridePath(string? path)
+        {
+            if (path != null && path != string.Empty)
+            {
+                ConfigLoader.OverrideConfigPath(path);
+                kh.ReloadKH();
+                
+            }
         }
 
         private void Kh_KeyDown(Keys key, bool Shift, bool Ctrl, bool Alt)

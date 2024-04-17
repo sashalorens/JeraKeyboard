@@ -31,9 +31,6 @@ namespace JeraKeyboard
                 }
 
                 var jsonFile = JSONConverter.FromJson(jsonString);
-
-                /* String jsonString = File.ReadAllText("C:\\Users\\utto6\\Desktop\\projects\\c#\\3\\JeraKeyboard\\config.json", Encoding.UTF8);
-                var jsonFile = JSONConverter.FromJson(jsonString); */
                 isConfigExists = true;
                 return jsonFile;
             }
